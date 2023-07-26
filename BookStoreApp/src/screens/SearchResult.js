@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
 import TopBar from '../components/TopBar';
 import theme from '../utilities/StylingConstants';
 import BookCard from '../components/BookCard';
@@ -14,14 +14,9 @@ import BottomBar from '../components/BottomBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const SearchResult = ({navigation, route}) => {
-  const search = route.params.search;
-  const arr = [
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-  ];
+  const searchData = route.params.searchData;
+  const search= route.params.search;
+  
   return (
     <View style={styles.container}>
       <TopBar />
@@ -37,14 +32,8 @@ const SearchResult = ({navigation, route}) => {
           <FlatList
             numColumns={2}
             key={2}
-            data={arr}
-            renderItem={({item}) => (
-              <BookCard
-                price={20}
-                title={'Dont MAke me think'}
-                writer={'Steve krug'}
-              />
-            )}
+            data={searchData}
+            renderItem={({item}) => <BookCard {...item} />}
           />
         </ScrollView>
       </View>
@@ -63,6 +52,7 @@ const styles = StyleSheet.create({
   },
   container2: {
     marginLeft: theme.spacing.space2,
+   height: '88%'
   },
   text: {
     fontSize: theme.text.text3,

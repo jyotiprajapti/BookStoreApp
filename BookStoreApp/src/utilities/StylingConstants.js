@@ -42,7 +42,7 @@ export default theme = {
   },
   text:{
     text1: 15,
-    text2:20,
+    text2:18,
     text3:30,
     text4:35,
     text5:40,

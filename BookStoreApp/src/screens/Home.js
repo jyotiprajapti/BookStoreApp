@@ -1,46 +1,51 @@
 import {FlatList, ScrollView, StyleSheet, Text, View} from 'react-native';
-import React, { useState } from 'react';
+import React, {useEffect, useState, useContext} from 'react';
 import TopBar from '../components/TopBar';
 import theme from '../utilities/StylingConstants';
 import BookCard from '../components/BookCard';
 import BottomBar from '../components/BottomBar';
-
+import { AppContext } from '../context/Context';
 const Home = ({navigation}) => {
-  const arr = [
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-  ];
- 
+  const [data, setData] = useState([]);
+  const {setBookData,bookData} = useContext(AppContext);
+  const bookstore = [];
+  const fetchData = async () => {
+    const items = await fetch(
+      'https://bookstore-a5a0d-default-rtdb.firebaseio.com/BookStore.json',
+    )
+      .then(response => response.json())
+      .then(json => json);
+    Object.keys(items).forEach(val => bookstore.push(items[val]));
+    setData(bookstore);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  
+
+setBookData(data)
+
   return (
     <View style={styles.container}>
       <TopBar navigation={navigation} />
       <View style={styles.container2}>
         <View style={styles.textView}>
           <Text style={styles.text}>Books</Text>
-          <Text style={styles.text2}>(128 items)</Text>
+          <Text style={styles.text2}>({data.length} items)</Text>
         </View>
         <ScrollView style={styles.books}>
           <FlatList
+            data={data}
             numColumns={2}
-            key={2}
-            data={arr}
-            renderItem={({item}) => (
-              <BookCard
-                price={20}
-                title={'Dont MAke me think'}
-                writer={'Steve krug'}
-              />
-            )}
+            renderItem={({item}) => <BookCard {...item} />}
           />
+          
         </ScrollView>
+       
       </View>
+     
+      <View/>
       <BottomBar />
-      <View style={{paddingBottom: 10}} />
     </View>
   );
 };
@@ -72,5 +77,6 @@ const styles = StyleSheet.create({
   books: {
     flexDirection: 'row',
     flexWrap: 'wrap',
+    height: theme.height.height9
   },
 });

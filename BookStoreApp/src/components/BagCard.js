@@ -1,29 +1,46 @@
 import {StyleSheet, Text, TouchableOpacity, View, Image} from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import Add from '../assets/images/Group 4217';
 import Remove from '../assets/images/Group 4216';
 import Cross from '../assets/images/Icon material-close';
 import theme from '../utilities/StylingConstants';
-const BagCard = ({book, writer, price,number}) => {
+
+const BagCard = ({
+  bookname,
+  author,
+  price,
+  number,
+  url,
+  addToCart,
+  removeFromCart,
+}) => {
+  
   return (
     <View style={styles.container}>
       <View style={{flexDirection: 'row'}}>
-        <Image style={styles.image} />
+        <Image
+          style={styles.image}
+          source={{uri: url}}
+          height={70}
+          width={50}
+        />
         <View style={styles.textView}>
           <TouchableOpacity style={styles.cross}>
             <Cross />
           </TouchableOpacity>
-          <Text style={styles.text1}>{book}</Text>
-          <Text style={styles.text2}>{writer}</Text>
+          <Text style={styles.text1}>{bookname}</Text>
+          <Text style={styles.text2}>{author}</Text>
           <Text style={styles.text3}>{price}</Text>
         </View>
       </View>
       <View style={styles.view2}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={removeFromCart} >
           <Remove />
         </TouchableOpacity>
-        <Text style = {styles.number}>{number}</Text>
-        <TouchableOpacity><Add/></TouchableOpacity>
+        <Text style={styles.number}>{number}</Text>
+        <TouchableOpacity onPress={addToCart}>
+          <Add />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -79,10 +96,10 @@ const styles = StyleSheet.create({
     marginLeft: theme.width.width2,
     paddingHorizontal: theme.spacing.space2,
     flexDirection: 'row',
-    gap: theme.spacing.space5
+    gap: theme.spacing.space5,
   },
-  number:{
+  number: {
     color: theme.colors.maroon,
-    fontSize: theme.spacing.space3
-  }
+    fontSize: theme.spacing.space3,
+  },
 });

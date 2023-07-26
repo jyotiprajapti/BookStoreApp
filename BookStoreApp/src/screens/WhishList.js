@@ -6,21 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useContext} from 'react';
 import TopBar from '../components/TopBar';
 import theme from '../utilities/StylingConstants';
 import BookCard from '../components/BookCard';
 import BottomBar from '../components/BottomBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { AppContext } from '../context/Context';
 const Whishlist = ({navigation}) => {
-  const arr = [
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-  ];
+ 
+  const {whishlist,removeFromWhishlist} = useContext(AppContext)
+
   return (
     <View style={styles.container}>
       <TopBar />
@@ -30,20 +26,14 @@ const Whishlist = ({navigation}) => {
             <Ionicons name="arrow-back" size={30} color={theme.colors.black} />
           </TouchableOpacity>
           <Text style={styles.text}>Whishlist</Text>
-          <Text style={styles.text2}>(5 items)</Text>
+          <Text style={styles.text2}>({whishlist.length})</Text>
         </View>
         <ScrollView style={styles.books}>
           <FlatList
             numColumns={2}
             key={2}
-            data={arr}
-            renderItem={({item}) => (
-              <BookCard
-                price={20}
-                title={'Dont MAke me think'}
-                writer={'Steve krug'}
-              />
-            )}
+            data={whishlist}
+            renderItem={({item}) => <BookCard {...item} />}
           />
         </ScrollView>
       </View>
@@ -62,6 +52,7 @@ const styles = StyleSheet.create({
   },
   container2: {
     marginLeft: theme.spacing.space2,
+    height:"88%"
   },
   text: {
     fontSize: theme.text.text3,

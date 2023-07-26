@@ -7,32 +7,37 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import theme from '../utilities/StylingConstants';
 import RecentlySearched from '../components/RecentlySearched';
 import BottomBar from '../components/BottomBar';
+import {AppContext} from '../context/Context';
 const Search = ({navigation}) => {
   const [search, setSearch] = useState('');
-  const arr = [
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-    {name: 'jyoti'},
-  ];
+  const [searchData, setSearchData] = useState([]);
+  const {bookData} = useContext(AppContext);
+  const getSearchdata = word => {
+    const searchedData = bookData.filter(item =>
+      item.bookname?.toUpperCase()?.includes(word.toUpperCase()),
+    );
+    setSearchData(searchedData);
+    navigation.navigate('SearchResult', {
+      search: search,
+      searchData: searchData,
+    });
+  };
+
+
   return (
     <View style={styles.container}>
-      <View>
+      <View style = {{height: '96%'}}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons name="arrow-back" size={30} color={theme.colors.black} />
         </TouchableOpacity>
         <View style={styles.search}>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('SearchResult', {search: search})
-            }>
+          <TouchableOpacity onPress={() => getSearchdata(search)}>
             <AntDesign
               name="search1"
               size={26}
@@ -45,16 +50,16 @@ const Search = ({navigation}) => {
             value={search}
             placeholderTextColor={theme.colors.grey}
             onChangeText={text => setSearch(text)}
-            style = {{color: 'black'}}
+            style={{color: 'black'}}
           />
         </View>
         <Text style={styles.text}>Recently Searched</Text>
 
         <ScrollView>
           <FlatList
-            data={arr}
+            data={searchData}
             renderItem={({item}) => (
-              <RecentlySearched book="Dont make me think" />
+              <RecentlySearched book={item.bookname} />
             )}
           />
         </ScrollView>

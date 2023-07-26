@@ -7,10 +7,12 @@ import Search from './src/screens/Search';
 import SearchResult from './src/screens/SearchResult';
 import MyBag from './src/screens/MyBag';
 import OrderPlaced from './src/screens/OrderPlaced';
+import { AppProvider } from './src/context/Context';
 const Stack = createNativeStackNavigator();
 
 const App = () => {
   return (
+    <AppProvider>
     <NavigationContainer>
 <Stack.Navigator screenOptions={{
     headerShown: false
@@ -23,6 +25,7 @@ const App = () => {
 <Stack.Screen name = "OrderPlaced" component={OrderPlaced}/>
 </Stack.Navigator>
     </NavigationContainer>
+    </AppProvider>
   )
 }
 

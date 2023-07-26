@@ -1,13 +1,26 @@
-import React from 'react';
+import React,{useContext, useEffect, useState} from 'react';
 import {View, StyleSheet, Text, TouchableOpacity} from 'react-native';
 import theme from '../utilities/StylingConstants';
+import { AppContext } from '../context/Context';
 const BottomBarBag = ({navigation}) => {
+  const [price, setPrice] = useState(0)
+  const {cart} = useContext(AppContext)
+  const total = () =>{
+    cart.forEach(element => {
+      const priceItem = price+element.price
+     setPrice(priceItem)
+    });
+  }
+  useEffect(()=>{
+    total();
+  })
+ 
   return (
     <View style={styles.container}>
       <View
         style={styles.view}>
         <Text style = {styles.text1} >Total</Text>
-        <Text style = {styles.text2} >Rs 3000</Text>
+        <Text style = {styles.text2} >{price}</Text>
       </View>
       <View
          style={styles.view}>
